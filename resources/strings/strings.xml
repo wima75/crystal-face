@@ -6,6 +6,7 @@
 	<string id="ThemeTitle">Theme</string>
 	<string id="HoursColourTitle">Hours Colour</string>
 	<string id="MinutesColourTitle">Minutes Colour</string>
+	<string id="IsMinutesBoldTitle">Show Minutes in Bold Font</string>
 	<string id="LeftGoalMeterTitle">Left Meter</string>
 	<string id="RightGoalMeterTitle">Right Meter</string>
 	<string id="CaloriesGoalTitle">Calories Goal (1-10,000kCal)</string>

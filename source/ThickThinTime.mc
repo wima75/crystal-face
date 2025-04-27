@@ -6,7 +6,7 @@ import Toybox.Lang;
 
 class ThickThinTime extends Ui.Drawable {
 
-	private var mHoursFont, mMinutesFont, mSecondsFont;
+	private var mBoldFont, mLightFont, mSecondsFont;
 
 	// "y" parameter passed to drawText(), read from layout.xml.
 	private var mSecondsY;
@@ -56,8 +56,8 @@ class ThickThinTime extends Ui.Drawable {
 		mSecondsClipRectWidth = params[:secondsClipWidth];
 		mSecondsClipRectHeight = params[:secondsClipHeight];
 
-		mHoursFont = Ui.loadResource(Rez.Fonts.HoursFont);
-		mMinutesFont = Ui.loadResource(Rez.Fonts.MinutesFont);
+		mBoldFont = Ui.loadResource(Rez.Fonts.BoldFont);
+		mLightFont = Ui.loadResource(Rez.Fonts.LightFont);
 		mSecondsFont = Ui.loadResource(Rez.Fonts.SecondsFont);
 	}
 
@@ -84,8 +84,9 @@ class ThickThinTime extends Ui.Drawable {
 
 		// Centre combined hours and minutes text (not the same as right-aligning hours and left-aligning minutes).
 		// Font has tabular figures (monospaced numbers) even across different weights, so does not matter which of hours or
-		// minutes font is used to calculate total width. 
-		var totalWidth = dc.getTextWidthInPixels(hours + minutes, mHoursFont);
+		// minutes font is used to calculate total width.
+		var hoursFont = mBoldFont;
+		var totalWidth = dc.getTextWidthInPixels(hours + minutes, hoursFont);
 		var x = halfDCWidth - (totalWidth / 2);
 
 		// Draw hours.
@@ -93,18 +94,19 @@ class ThickThinTime extends Ui.Drawable {
 		dc.drawText(
 			x,
 			halfDCHeight,
-			mHoursFont,
+			hoursFont,
 			hours,
 			Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER
 		);
-		x += dc.getTextWidthInPixels(hours, mHoursFont);
+		x += dc.getTextWidthInPixels(hours, hoursFont);
 
 		// Draw minutes.
+		var minutesFont = gIsMinutesBold ? mBoldFont : mLightFont;
 		dc.setColor(gMinutesColour, Graphics.COLOR_TRANSPARENT);
 		dc.drawText(
 			x,
 			halfDCHeight,
-			mMinutesFont,
+			minutesFont,
 			minutes,
 			Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER
 		);
@@ -112,7 +114,7 @@ class ThickThinTime extends Ui.Drawable {
 		// If required, draw AM/PM after minutes, vertically centred.
 		if (amPmText.length() > 0) {
 			dc.setColor(gThemeColour, Graphics.COLOR_TRANSPARENT);
-			x += dc.getTextWidthInPixels(minutes, mMinutesFont);
+			x += dc.getTextWidthInPixels(minutes, minutesFont);
 			dc.drawText(
 				x + AM_PM_X_OFFSET, // Breathing space between minutes and AM/PM.
 				halfDCHeight,

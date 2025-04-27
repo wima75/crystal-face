@@ -1,7 +1,7 @@
 <!-- rectangle-320x360 uses same fonts as round-360x360 -->
 <fonts>
-	<font id="HoursFont" filename="../../resources-round-360x360/fonts/titillium-web-bold-102-tall.fnt" antialias="true"/>
-	<font id="MinutesFont" filename="../../resources-round-360x360/fonts/titillium-web-light-102-tall.fnt" antialias="true"/>
+	<font id="BoldFont" filename="../../resources-round-360x360/fonts/titillium-web-bold-102-tall.fnt" antialias="true"/>
+	<font id="LightFont" filename="../../resources-round-360x360/fonts/titillium-web-light-102-tall.fnt" antialias="true"/>
 	<font id="SecondsFont" filename="../../resources-round-360x360/fonts/titillium-web-semibold-36.fnt" antialias="true" filter="0123456789AP"/>
 	<font id="DateFont" filename="../../resources-round-360x360/fonts/titillium-web-semibold-36.fnt" antialias="true" filter=" 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÁÄÅÉÍÖØÚČĚŘŚŠŹŽ"/>
 
@@ -25,8 +25,8 @@
 
 	<!-- Always on fonts -->
 	<!-- Date/battery fonts should strictly be 22px, but keep number of fonts to a sensible minimum -->
-	<font id="AlwaysOnHoursFont" filename="../../resources-round-260x260/fonts/titillium-web-bold-74-tall.fnt" antialias="true"/>
-	<font id="AlwaysOnMinutesFont" filename="../../resources-round-260x260/fonts/titillium-web-light-74-tall.fnt" antialias="true"/>
+	<font id="AlwaysOnBoldFont" filename="../../resources-round-260x260/fonts/titillium-web-bold-74-tall.fnt" antialias="true"/>
+	<font id="AlwaysOnLightFont" filename="../../resources-round-260x260/fonts/titillium-web-light-74-tall.fnt" antialias="true"/>
 	<font id="AlwaysOnSecondsFont" filename="../../resources-round-260x260/fonts/titillium-web-semibold-26.fnt" antialias="true" filter="AP"/> <!-- AM/PM only -->
 	<font id="AlwaysOnDateFont" filename="../../resources/fonts/titillium-web-semibold-24.fnt" antialias="true" filter=" 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÁÄÅÉÍÖØÚČĚŘŚŠŹŽ"/>
 	<font id="AlwaysOnDateFontOverrideZHS" filename="../../resources/fonts/noto-sans-cjk-sc-medium-24.fnt" antialias="true"/>

@@ -18,6 +18,7 @@ var gBackgroundColour;
 var gMeterBackgroundColour;
 var gHoursColour;
 var gMinutesColour;
+var gIsMinutesBold;
 
 var gNormalFont;
 var gIconsFont;
@@ -273,6 +274,8 @@ class CrystalView extends Ui.WatchFace {
 
 		var mco = App.getApp().getIntProperty("MinutesColourOverride", 0);
 		gMinutesColour = overrideColours[(mco < 0 || mco > 2) ? 0 : mco];
+
+		gIsMinutesBold = App.getApp().getBooleanProperty("IsMinutesBold", false);
 	}
 
 	function onSettingsChangedSinceLastDraw() {

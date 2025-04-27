@@ -179,6 +179,10 @@
 		</settingConfig>
 	</setting>
 
+	<setting propertyKey="@Properties.IsMinutesBold" title="@Strings.IsMinutesBoldTitle">
+		<settingConfig type="boolean"/>
+	</setting>
+
 	<setting propertyKey="@Properties.HideHoursLeadingZero" title="@Strings.HideHoursLeadingZeroTitle">
 		<settingConfig type="boolean"/>
 	</setting>
