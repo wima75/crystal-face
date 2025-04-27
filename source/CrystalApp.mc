@@ -108,6 +108,14 @@ class CrystalApp extends App.AppBase {
 		return value;
 	}
 
+	function getBooleanProperty(key, defaultValue) {
+		var value = getPropertyValue(key);
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
+	}
+
 	// New app settings have been received so trigger a UI update
 	function onSettingsChanged() {
 		mFieldTypes[0] = getIntProperty("Field1Type", 0);
