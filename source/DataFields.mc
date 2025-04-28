@@ -32,7 +32,8 @@ enum /* FIELD_TYPES */ {
 	FIELD_TYPE_PRESSURE,
 	FIELD_TYPE_HUMIDITY,
 	FIELD_TYPE_SUNRISE,
-	FIELD_TYPE_SUNSET
+	FIELD_TYPE_SUNSET,
+	FIELD_TYPE_MOONPHASE
 }
 
 typedef FieldTypeValue as {
@@ -58,6 +59,8 @@ class DataFields extends Ui.Drawable {
 	// private const CM_PER_KM = 100000;
 	// private const MI_PER_KM = 0.621371;
 	// private const FT_PER_M = 3.28084;
+
+	private var _moonPhase = new MoonPhase();
 
 	typedef DataFieldsParams as {
 		:left as Number,
@@ -308,6 +311,12 @@ class DataFields extends Ui.Drawable {
 					"50d" => "A" /* 61441 */, "50n" => "a" /* 61475 */, // mist
 				}[result["weatherIcon"]];
 
+			} else if (fieldType == FIELD_TYPE_MOONPHASE) {
+				font = gIconsFont;
+				colour = gMonoLightColour;
+
+				var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+				icon = _moonPhase.getIcon(now, 'B');
 			} else {
 				font = gIconsFont;
 
@@ -331,7 +340,7 @@ class DataFields extends Ui.Drawable {
 
 					FIELD_TYPE_SUNRISE_SUNSET => "?",
 					FIELD_TYPE_PRESSURE => "@",
-					FIELD_TYPE_HUMIDITY => "A",
+					FIELD_TYPE_HUMIDITY => "A"
 				}[fieldType];
 			}
 
