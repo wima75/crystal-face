@@ -13,7 +13,7 @@ import Toybox.Lang;
 
 enum /* FIELD_TYPES */ {
 	// Pseudo-fields.	
-	FIELD_TYPE_SUNRISE = -1,	
+	//FIELD_TYPE_SUNRISE = -1,	
 	//FIELD_TYPE_SUNSET = -2,
 
 	// Real fields (used by properties).
@@ -30,7 +30,9 @@ enum /* FIELD_TYPES */ {
 	FIELD_TYPE_SUNRISE_SUNSET,
 	FIELD_TYPE_WEATHER,
 	FIELD_TYPE_PRESSURE,
-	FIELD_TYPE_HUMIDITY
+	FIELD_TYPE_HUMIDITY,
+	FIELD_TYPE_SUNRISE,
+	FIELD_TYPE_SUNSET
 }
 
 typedef FieldTypeValue as {
@@ -312,7 +314,7 @@ class DataFields extends Ui.Drawable {
 				// Map fieldType to icon font char.
 				icon = {
 					FIELD_TYPE_SUNRISE => ">",
-					// FIELD_TYPE_SUNSET => "?",
+					FIELD_TYPE_SUNSET => "?",
 
 					FIELD_TYPE_HEART_RATE => "3",
 					FIELD_TYPE_HR_LIVE_5S => "3",
@@ -495,6 +497,8 @@ class DataFields extends Ui.Drawable {
 				break;
 
 			case FIELD_TYPE_SUNRISE_SUNSET:
+			case FIELD_TYPE_SUNRISE:
+			case FIELD_TYPE_SUNSET:
 			
 				if (gLocationLat != null) {
 					var nextSunEvent = 0;
@@ -512,21 +516,27 @@ class DataFields extends Ui.Drawable {
 					// If sunrise/sunset happens today.
 					var sunriseSunsetToday = ((sunTimes[0] != null) && (sunTimes[1] != null));
 					if (sunriseSunsetToday) {
-
-						// Before sunrise today: today's sunrise is next.
-						if (now < sunTimes[0]) {
+						if (type == FIELD_TYPE_SUNRISE) {
 							nextSunEvent = sunTimes[0];
-							result["isSunriseNext"] = true;
-
-						// After sunrise today, before sunset today: today's sunset is next.
-						} else if (now < sunTimes[1]) {
+						} else if (type == FIELD_TYPE_SUNSET) {
 							nextSunEvent = sunTimes[1];
-
-						// After sunset today: tomorrow's sunrise (if any) is next.
 						} else {
-							sunTimes = getSunTimes(gLocationLat, gLocationLng, null, /* tomorrow */ true);
-							nextSunEvent = sunTimes[0];
-							result["isSunriseNext"] = true;
+
+							// Before sunrise today: today's sunrise is next.
+							if (now < sunTimes[0]) {
+								nextSunEvent = sunTimes[0];
+								result["isSunriseNext"] = true;
+
+							// After sunrise today, before sunset today: today's sunset is next.
+							} else if (now < sunTimes[1]) {
+								nextSunEvent = sunTimes[1];
+
+							// After sunset today: tomorrow's sunrise (if any) is next.
+							} else {
+								sunTimes = getSunTimes(gLocationLat, gLocationLng, null, /* tomorrow */ true);
+								nextSunEvent = sunTimes[0];
+								result["isSunriseNext"] = true;
+							}
 						}
 					}
 
@@ -535,7 +545,7 @@ class DataFields extends Ui.Drawable {
 						value = "---";
 
 						// Sun never rises: sunrise is next, but more than a day from now.
-						if (sunTimes[0] == null) {
+						if (type == FIELD_TYPE_SUNRISE_SUNSET && sunTimes[0] == null) {
 							result["isSunriseNext"] = true;
 						}
 
