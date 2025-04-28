@@ -22,6 +22,7 @@ var gIsMinutesBold;
 
 var gNormalFont;
 var gIconsFont;
+var gSecondsFont;
 
 const SCREEN_MULTIPLIER = (Sys.getDeviceSettings().screenWidth < 360) ? 1 : 2;
 //const BATTERY_LINE_WIDTH = 2;
@@ -134,6 +135,7 @@ class CrystalView extends Ui.WatchFace {
 	// Load your resources here
 	function onLayout(dc) {
 		gIconsFont = Ui.loadResource(Rez.Fonts.IconsFont);
+		gSecondsFont = Ui.loadResource(Rez.Fonts.SecondsFont);
 
 		setLayout(Rez.Layouts.WatchFace(dc));
 		cacheDrawables();

@@ -14,6 +14,11 @@ class Indicators extends Ui.Drawable {
 	private var mIndicator2Type;
 	private var mIndicator3Type;
 
+	private var _loc2X;
+	private var _indicator4Type;
+	private var _indicator5Type;
+	private var _indicator6Type;
+
 	// private enum /* INDICATOR_TYPES */ {
 	// 	INDICATOR_TYPE_BLUETOOTH,
 	// 	INDICATOR_TYPE_ALARMS,
@@ -27,7 +32,8 @@ class Indicators extends Ui.Drawable {
 		:locY as Number,
 		:spacingX as Number,
 		:spacingY as Number,
-		:batteryWidth as Number
+		:batteryWidth as Number,
+		:loc2X as Number
 	};
 
 	function initialize(params as IndicatorsParams) {
@@ -40,6 +46,8 @@ class Indicators extends Ui.Drawable {
 		}
 		mBatteryWidth = params[:batteryWidth];
 
+		_loc2X = params[:loc2X];
+
 		onSettingsChanged();
 	}
 
@@ -47,6 +55,9 @@ class Indicators extends Ui.Drawable {
 		mIndicator1Type = getPropertyValue("Indicator1Type");
 		mIndicator2Type = getPropertyValue("Indicator2Type");
 		mIndicator3Type = getPropertyValue("Indicator3Type");
+		_indicator4Type = getPropertyValue("Indicator4Type");
+		_indicator5Type = getPropertyValue("Indicator5Type");
+		_indicator6Type = getPropertyValue("Indicator6Type");
 	}
 
 	function draw(dc) {
@@ -83,10 +94,22 @@ class Indicators extends Ui.Drawable {
 	(:vertical_indicators)
 	// function drawVertical(dc, indicatorCount) {
 	function drawIndicators(dc, indicatorCount) {
-		if (indicatorCount == 3) {
+		if (indicatorCount >= 3) {
 			drawIndicator(dc, mIndicator1Type, locX, locY - mSpacing);
 			drawIndicator(dc, mIndicator2Type, locX, locY);
 			drawIndicator(dc, mIndicator3Type, locX, locY + mSpacing);
+
+			if (indicatorCount == 6) {
+				drawIndicator(dc, _indicator4Type, _loc2X, locY - mSpacing);
+				drawIndicator(dc, _indicator5Type, _loc2X, locY);
+				drawIndicator(dc, _indicator6Type, _loc2X, locY + mSpacing);
+			} else if (indicatorCount == 5) {
+				drawIndicator(dc, _indicator4Type, _loc2X, locY - (mSpacing / 2));
+				drawIndicator(dc, _indicator5Type, _loc2X, locY + (mSpacing / 2));
+			} else if (indicatorCount == 4) {
+				drawIndicator(dc, _indicator4Type, _loc2X, locY);
+			}		
+
 		} else if (indicatorCount == 2) {
 			drawIndicator(dc, mIndicator1Type, locX, locY - (mSpacing / 2));
 			drawIndicator(dc, mIndicator2Type, locX, locY + (mSpacing / 2));
@@ -111,6 +134,19 @@ class Indicators extends Ui.Drawable {
 			} else {
 				indicatorType = 0; // INDICATOR_TYPE_BLUETOOTH
 			}
+		}
+
+		if (indicatorType == 5) {
+			var clockTime = Sys.getClockTime();
+			var seconds = clockTime.sec.format("%02d");
+			dc.drawText(
+				x,
+				y,
+				gSecondsFont,
+				seconds,
+				Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
+			);
+			return;
 		}
 
 		// Get value for indicator type.

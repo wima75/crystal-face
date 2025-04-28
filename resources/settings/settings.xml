@@ -139,7 +139,7 @@
 	</setting>
 
 	<setting propertyKey="@Properties.IndicatorCount" title="@Strings.IndicatorCountTitle">
-		<settingConfig type="numeric" min="0" max="3" required="true"/>
+		<settingConfig type="numeric" min="0" max="6" required="true"/>
 	</setting>
 
 	<setting propertyKey="@Properties.Indicator1Type" title="@Strings.Indicator1Title">
@@ -163,6 +163,37 @@
 	</setting>
 
 	<setting propertyKey="@Properties.Indicator3Type" title="@Strings.Indicator3Title">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.Bluetooth</listEntry>
+			<listEntry value="1">@Strings.Alarms</listEntry>
+			<listEntry value="2">@Strings.Notifications</listEntry>
+			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
+			<listEntry value="4">@Strings.Battery</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator4Type" title="@Strings.Indicator4Title">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.Bluetooth</listEntry>
+			<listEntry value="1">@Strings.Alarms</listEntry>
+			<listEntry value="2">@Strings.Notifications</listEntry>
+			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
+			<listEntry value="4">@Strings.Battery</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator5Type" title="@Strings.Indicator5Title">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.Bluetooth</listEntry>
+			<listEntry value="1">@Strings.Alarms</listEntry>
+			<listEntry value="2">@Strings.Notifications</listEntry>
+			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
+			<listEntry value="4">@Strings.Battery</listEntry>
+			<listEntry value="5">@Strings.Seconds</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator6Type" title="@Strings.Indicator6Title">
 		<settingConfig type="list">
 			<listEntry value="0">@Strings.Bluetooth</listEntry>
 			<listEntry value="1">@Strings.Alarms</listEntry>
