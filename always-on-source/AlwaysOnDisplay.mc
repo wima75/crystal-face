@@ -62,8 +62,8 @@ class AlwaysOnDisplay extends Ui.Drawable {
 		mDataY = params[:dataY];
 		mDataLeft = params[:dataLeft];
 
-		mHoursFont = Ui.loadResource(Rez.Fonts.AlwaysOnHoursFont);
-		mMinutesFont = Ui.loadResource(Rez.Fonts.AlwaysOnMinutesFont);
+		mHoursFont = Ui.loadResource(Rez.Fonts.AlwaysOnBoldFont);
+		mMinutesFont = Ui.loadResource(Rez.Fonts.AlwaysOnLightFont);
 		mSecondsFont = Ui.loadResource(Rez.Fonts.AlwaysOnSecondsFont);
 		mBatteryFont = Ui.loadResource(Rez.Fonts.AlwaysOnBatteryFont);
 
