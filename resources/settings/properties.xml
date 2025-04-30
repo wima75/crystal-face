@@ -47,6 +47,8 @@
 	<property id="HideSeconds" type="boolean">true</property>
 	<property id="HideHoursLeadingZero" type="boolean">false</property>
 
+	<property id="MoonPhaseAppearance" type="number">3</property>
+
 	<property id="OWMKeyOverride" type="string"></property>
 
 </properties>

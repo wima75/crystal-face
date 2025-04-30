@@ -350,6 +350,15 @@
 		</settingConfig>
 	</setting>
 
+	<setting propertyKey="@Properties.MoonPhaseAppearance" title="@Strings.MoonPhaseAppearance">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.MoonPhaseAppearanceDefaultThemeColor</listEntry>
+			<listEntry value="1">@Strings.MoonPhaseAppearanceLightColor</listEntry>
+			<listEntry value="2">@Strings.MoonPhaseAppearanceMidtoneColor</listEntry>
+			<listEntry value="3">@Strings.MoonPhaseAppearanceMidtoneColorFullMoonLight</listEntry>
+		</settingConfig>
+	</setting>
+
 	<setting propertyKey="@Properties.OWMKeyOverride" title="@Strings.OWMKeyOverride">
 		<settingConfig type="alphaNumeric" maxLength="32"/>
 	</setting>

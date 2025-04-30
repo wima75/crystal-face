@@ -98,6 +98,12 @@
 	<string id="IndicatorAppearanceHideWhenFalse">Hide when false</string>
 	<string id="IndicatorAppearanceCombined1Default2Light">Combined Indicator: first default, second light</string>
 
+	<string id="MoonPhaseAppearance">Moon Phase Appearance</string>
+	<string id="MoonPhaseAppearanceDefaultThemeColor">Default theme color</string>
+	<string id="MoonPhaseAppearanceLightColor">Light color</string>
+	<string id="MoonPhaseAppearanceMidtoneColor">Midtone color</string>
+	<string id="MoonPhaseAppearanceMidtoneColorFullMoonLight">Midtone color, fullmoon light</string>
+
 	<!-- Internal use only. Required because fonts cannot be overridden by locale. Leave blank for no override. -->
 	<string id="DATE_FONT_OVERRIDE"></string>
 
