@@ -42,11 +42,10 @@
 		<param name="locY">130</param>
 		<param name="spacingY">32</param>
 		<param name="batteryWidth">24</param>
-		<param name="loc2X">228</param>
 	</drawable>
 
 	<drawable id="Time" class="ThickThinTime">
-        <param name="adjustY">-5</param>
+    <param name="adjustY">-5</param>
 		<param name="secondsX">182</param>
 		<param name="secondsY">158</param>
 		<param name="secondsClipY">170</param>

@@ -7,164 +7,332 @@ import Toybox.Lang;
 
 class Indicators extends Ui.Drawable {
 
-	private var mSpacing;
-	private var mBatteryWidth;
+  private var mSpacing;
+  private var mBatteryWidth;
 
-	private var mIndicator1Type;
-	private var mIndicator2Type;
-	private var mIndicator3Type;
+  // use dictionary because with array there are compiler warnings
+  private var _indicators1 = {} as Dictionary<Number, Indicator>;
+  private var _indicators2 = {} as Dictionary<Number, Indicator>;
 
-	private var _loc2X;
-	private var _indicator4Type;
-	private var _indicator5Type;
-	private var _indicator6Type;
+  private enum IndicatorTypes {
+    INDICATOR_TYPE_None = -1,
+    INDICATOR_TYPE_Bluetooth = 0,
+    INDICATOR_TYPE_Alarms = 1,
+    INDICATOR_TYPE_Notifications = 2,
+    INDICATOR_TYPE_BluetoothOrNotifications = 3,
+    INDICATOR_TYPE_Battery = 4,
+    INDICATOR_TYPE_DoNotDisturb = 5,
+    INDICATOR_TYPE_Seconds = 6
+  }
 
-	// private enum /* INDICATOR_TYPES */ {
-	// 	INDICATOR_TYPE_BLUETOOTH,
-	// 	INDICATOR_TYPE_ALARMS,
-	// 	INDICATOR_TYPE_NOTIFICATIONS,
-	// 	INDICATOR_TYPE_BLUETOOTH_OR_NOTIFICATIONS,
-	// 	INDICATOR_TYPE_BATTERY
-	// }
+  private enum IndicatorPositions {
+    //INDICATOR_POSITION_Dynamic = 0,
+    INDICATOR_POSITION_Fixed = 1
+  }
 
-	typedef IndicatorsParams as {
-		:locX as Number,
-		:locY as Number,
-		:spacingX as Number,
-		:spacingY as Number,
-		:batteryWidth as Number,
-		:loc2X as Number
-	};
+  private enum IndicatorAppearance {
+    //INDICATOR_APPEARANCE_Normal = 0,
+    INDICATOR_APPEARANCE_HideWhenFalse = 1
+  }
 
-	function initialize(params as IndicatorsParams) {
-		Drawable.initialize(params);
+  typedef IndicatorsParams as {
+    :locX as Number,
+    :locY as Number,
+    :spacingX as Number,
+    :spacingY as Number,
+    :batteryWidth as Number
+  };
 
-		if (params[:spacingX] != null) {
-			mSpacing = params[:spacingX];
-		} else {
-			mSpacing = params[:spacingY];
-		}
-		mBatteryWidth = params[:batteryWidth];
+  function initialize(params as IndicatorsParams) {
+    Drawable.initialize(params);
 
-		_loc2X = params[:loc2X];
+    if (params[:spacingX] != null) {
+      mSpacing = params[:spacingX];
+    } else {
+      mSpacing = params[:spacingY];
+    }
+    mBatteryWidth = params[:batteryWidth];
 
-		onSettingsChanged();
-	}
+    onSettingsChanged();
+  }
 
-	function onSettingsChanged() {
-		mIndicator1Type = getPropertyValue("Indicator1Type");
-		mIndicator2Type = getPropertyValue("Indicator2Type");
-		mIndicator3Type = getPropertyValue("Indicator3Type");
-		_indicator4Type = getPropertyValue("Indicator4Type");
-		_indicator5Type = getPropertyValue("Indicator5Type");
-		_indicator6Type = getPropertyValue("Indicator6Type");
-	}
+  function onSettingsChanged() {
+    for (var i = 0; i < 3; i++) {
+      var indicator = new Indicator(
+        i,
+        getPropertyValue("Indicator1" + (i + 1) + "Type"),
+        getPropertyValue("Indicator1" + (i + 1) + "Position"),
+        getPropertyValue("Indicator1" + (i + 1) + "Appearance"),
+        getPropertyValue("Indicator1" + (i + 1) + "Color1"),
+        getPropertyValue("Indicator1" + (i + 1) + "Color2")
+      );
+      _indicators1.put(i, indicator);
+      indicator = new Indicator(
+        i,
+        getPropertyValue("Indicator2" + (i + 1) + "Type"),
+        getPropertyValue("Indicator2" + (i + 1) + "Position"),
+        getPropertyValue("Indicator2" + (i + 1) + "Appearance"),
+        getPropertyValue("Indicator2" + (i + 1) + "Color1"),
+        getPropertyValue("Indicator2" + (i + 1) + "Color2")
+      );
+      _indicators2.put(i, indicator);
+    }
+  }
 
-	function draw(dc) {
+  function draw(dc) {
+    drawIndicators(dc);
+  }
 
-		// #123 Protect against null or unexpected type e.g. String.
-		var indicatorCount = App.getApp().getIntProperty("IndicatorCount", 1);
+  (:horizontal_indicators)
+  function drawIndicators(dc) {
+    // eg Venu Sq 2
 
-		// // Horizontal layout for rectangle-148x205, rectangle-320x360
-		// if (mIsHorizontal) {
-		// 	drawHorizontal(dc, indicatorCount);
+    var y = locY;
+    var visibleIndicators = getVisibleIndicators(_indicators1);
 
-		// // Vertical layout for others.
-		// } else {
-		// 	drawVertical(dc, indicatorCount);
-		// }
-		drawIndicators(dc, indicatorCount);
-	}
+    var size = visibleIndicators.size();
+    var xPositions = new [size];
+    if (size == 0) {
+        // No indicators to draw
+        return;
+    } else if (size == 1) {
+        // 1 visible indicator
+        if (visibleIndicators.get(0).getPosition() == INDICATOR_POSITION_Fixed) {
+          xPositions[0] = getLocX(visibleIndicators[0].getIndex());
+        } else {
+          xPositions[0] = locX;
+        }
+    } else if (size == 2) {
+      var visibleIndicator0 = visibleIndicators.get(0);
+      var visibleIndicator1 = visibleIndicators.get(1);
+      // 2 visible indicators
+      if (visibleIndicator0.getPosition() == INDICATOR_POSITION_Fixed) {
+          // First fixed
+          xPositions[0] = getLocX(visibleIndicator0.getIndex());
+          if (visibleIndicator1.getPosition() == INDICATOR_POSITION_Fixed) {
+            xPositions[1] = getLocX(visibleIndicator1.getIndex());
+          } else {
+            xPositions[1] = locX + (mSpacing / 2);
+          }
+      } else if (visibleIndicator1.getPosition() == INDICATOR_POSITION_Fixed) {
+          // Second fixed: First centered left
+          xPositions[1] = getLocX(visibleIndicator1.getIndex());
+          xPositions[0] = locX - (mSpacing / 2);
+      } else {
+          // Dynamic
+          xPositions[0] = locX - (mSpacing / 2);
+          xPositions[1] = locX + (mSpacing / 2);
+      }
+    } else if (size == 3) {
+      xPositions[0] = locX - mSpacing;
+      xPositions[1] = locX;
+      xPositions[2] = locX + mSpacing;
+    }
+    
+    for (var i = 0; i < size; i++) {
+      drawIndicator(dc, visibleIndicators.get(i).getType(), xPositions[i], y);
+    }
+  }
 
-	(:horizontal_indicators)
-	// function drawHorizontal(dc, indicatorCount) {
-	function drawIndicators(dc, indicatorCount) {
-		if (indicatorCount == 3) {
-			drawIndicator(dc, mIndicator1Type, locX - mSpacing, locY);
-			drawIndicator(dc, mIndicator2Type, locX, locY);
-			drawIndicator(dc, mIndicator3Type, locX + mSpacing, locY);
-		} else if (indicatorCount == 2) {
-			drawIndicator(dc, mIndicator1Type, locX - (mSpacing / 2), locY);
-			drawIndicator(dc, mIndicator2Type, locX + (mSpacing / 2), locY);
-		} else if (indicatorCount == 1) {
-			drawIndicator(dc, mIndicator1Type, locX, locY);
-		}
-	}
+  (:vertical_indicators)
+  function drawIndicators(dc) {
+    var indicators = {};
+    var x = locX;
 
-	(:vertical_indicators)
-	// function drawVertical(dc, indicatorCount) {
-	function drawIndicators(dc, indicatorCount) {
-		if (indicatorCount >= 3) {
-			drawIndicator(dc, mIndicator1Type, locX, locY - mSpacing);
-			drawIndicator(dc, mIndicator2Type, locX, locY);
-			drawIndicator(dc, mIndicator3Type, locX, locY + mSpacing);
+    for (var j = 0; j < 2; j++) {
+      if (j == 0) {
+        indicators = _indicators1;
+      } else {
+        indicators = _indicators2;
+        x = dc.getWidth() - locX;
+      }
 
-			if (indicatorCount == 6) {
-				drawIndicator(dc, _indicator4Type, _loc2X, locY - mSpacing);
-				drawIndicator(dc, _indicator5Type, _loc2X, locY);
-				drawIndicator(dc, _indicator6Type, _loc2X, locY + mSpacing);
-			} else if (indicatorCount == 5) {
-				drawIndicator(dc, _indicator4Type, _loc2X, locY - (mSpacing / 2));
-				drawIndicator(dc, _indicator5Type, _loc2X, locY + (mSpacing / 2));
-			} else if (indicatorCount == 4) {
-				drawIndicator(dc, _indicator4Type, _loc2X, locY);
-			}		
+      var visibleIndicators = getVisibleIndicators(indicators);
 
-		} else if (indicatorCount == 2) {
-			drawIndicator(dc, mIndicator1Type, locX, locY - (mSpacing / 2));
-			drawIndicator(dc, mIndicator2Type, locX, locY + (mSpacing / 2));
-		} else if (indicatorCount == 1) {
-			drawIndicator(dc, mIndicator1Type, locX, locY);
-		}
-	}
+      var size = visibleIndicators.size();
+      var yPositions = new [size];
+      if (size == 0) {
+          // No indicators to draw
+          return;
+      } else if (size == 1) {
+          // 1 visible indicator
+          if (visibleIndicators.get(0).getPosition() == INDICATOR_POSITION_Fixed) {
+            yPositions[0] = getLocY(visibleIndicators.get(0).getIndex());
+          } else {
+            yPositions[0] = locY;
+          }
+      } else if (size == 2) {
+        var visibleIndicator0 = visibleIndicators.get(0);
+        var visibleIndicator1 = visibleIndicators.get(1);
+          // 2 visible indicators
+          if (visibleIndicator0.getPosition() == INDICATOR_POSITION_Fixed) {
+              // First fixed
+              yPositions[0] = getLocY(visibleIndicator0.getIndex());
+              if (visibleIndicator1.getPosition() == INDICATOR_POSITION_Fixed) {
+                yPositions[1] = getLocY(visibleIndicator1.getIndex());
+              } else {
+                yPositions[1] = locY + (mSpacing / 2);
+              }
+          } else if (visibleIndicator1.getPosition() == INDICATOR_POSITION_Fixed) {
+              // Second fixed: First centered above
+              yPositions[1] = getLocY(visibleIndicator1.getIndex());
+              yPositions[0] = locY - (mSpacing / 2);
+          } else {
+              // Dynamic
+              yPositions[0] = locY - (mSpacing / 2);
+              yPositions[1] = locY + (mSpacing / 2);
+          }
+      } else if (size == 3) {
+          yPositions[0] = locY - mSpacing;
+          yPositions[1] = locY;
+          yPositions[2] = locY + mSpacing;
+      }
+      
+      for (var i = 0; i < size; i++) {
+        drawIndicator(dc, visibleIndicators.get(i), x, yPositions[i]);
+      }
+    }
+  }
 
-	function drawIndicator(dc, indicatorType, x, y) {
+  private function getVisibleIndicators(indicators) as Dictionary<Number, Indicator> {
+    var visibleIndicators = {} as Dictionary<Number, Indicator>;
+    var index = 0;
+    for (var i = 0; i < indicators.size(); i++) {
+      var indicator = indicators.get(i);
+      if (indicator.getType() != INDICATOR_TYPE_None) {
+        var indicatorValue = getIndicatorValue(indicator.getType());
+        indicator.setValue(indicatorValue);
+        if (!(indicator.getAppearance() == INDICATOR_APPEARANCE_HideWhenFalse && indicatorValue == false)) {
+          visibleIndicators.put(index, indicator);
+          index++;
+        }
+      }
+    }
+    return visibleIndicators;
+  }
 
-		// Battery indicator.
-		if (indicatorType == 4 /* INDICATOR_TYPE_BATTERY */) {
-			drawBatteryMeter(dc, x, y, mBatteryWidth, mBatteryWidth / 2);
-			return;
-		}
+  private function getLocX(index) {
+    if (index == 0) {
+      return locX - mSpacing;
+    }
+    if (index == 1) {
+      return locX;
+    }
+    return locX + mSpacing;
+  }
 
-		// Show notifications icon if connected and there are notifications, bluetoothicon otherwise.
-		var settings = Sys.getDeviceSettings();
-		if (indicatorType == 3 /* INDICATOR_TYPE_BLUETOOTH_OR_NOTIFICATIONS */) {
-			if (settings.phoneConnected && (settings.notificationCount > 0)) {
-				indicatorType = 2; // INDICATOR_TYPE_NOTIFICATIONS
-			} else {
-				indicatorType = 0; // INDICATOR_TYPE_BLUETOOTH
-			}
-		}
+  private function getLocY(index) {
+    if (index == 0) {
+      return locY - mSpacing;
+    }
+    if (index == 1) {
+      return locY;
+    }
+    return locY + mSpacing;
+  }
 
-		if (indicatorType == 5) {
-			var clockTime = Sys.getClockTime();
-			var seconds = clockTime.sec.format("%02d");
-			dc.drawText(
-				x,
-				y,
-				gSecondsFont,
-				seconds,
-				Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
-			);
-			return;
-		}
+  private function getIndicatorValue(indicatorType) as Boolean {
+    if (indicatorType == -1) {
+      return true;
+    }
 
-		// Get value for indicator type.
-		var value = [
-			/* INDICATOR_TYPE_BLUETOOTH */ settings.phoneConnected,
-			/* INDICATOR_TYPE_ALARMS */ settings.alarmCount > 0,
-			/* INDICATOR_TYPE_NOTIFICATIONS */ settings.notificationCount > 0
-		][indicatorType];
+    if (indicatorType == INDICATOR_TYPE_Battery) {
+      return true;
+    }
 
-		dc.setColor(value ? gThemeColour : gMeterBackgroundColour, Graphics.COLOR_TRANSPARENT);
+    if (indicatorType == INDICATOR_TYPE_Seconds) {
+      return true;
+    }
 
-		// Icon.
-		dc.drawText(
-			x,
-			y,
-			gIconsFont,
-			["8", ":", "5"][indicatorType], // Get icon font char for indicator type.
-			Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
-		);
-	}
+    var settings = Sys.getDeviceSettings();
+    
+    if (indicatorType == INDICATOR_TYPE_BluetoothOrNotifications) {
+      if (settings.phoneConnected && (settings.notificationCount > 0)) {
+        return true;
+      } else {
+        return settings.phoneConnected;
+      }
+    }
+
+    if (indicatorType == INDICATOR_TYPE_Bluetooth) {
+      return settings.phoneConnected;
+    }
+
+    if (indicatorType == INDICATOR_TYPE_Notifications) {
+      return settings.notificationCount > 0;
+    }
+
+    if (indicatorType == INDICATOR_TYPE_Alarms) {
+      return settings.alarmCount > 0;
+    }
+
+    if (indicatorType == INDICATOR_TYPE_DoNotDisturb) {
+      if (settings has :doNotDisturb) {
+        return settings.doNotDisturb;
+      }
+      return false;
+    }
+
+    return false;
+  }
+
+  private function drawIndicator(dc, indicator, x, y) {
+    var indicatorType = indicator.getType();
+    if (indicatorType == -1) {
+      return;
+    }
+
+    if (indicatorType == INDICATOR_TYPE_Battery) {
+      drawBatteryMeter(dc, x, y, mBatteryWidth, mBatteryWidth / 2);
+      return;
+    }
+
+    var value = indicator.getValue();
+
+    // Show notifications icon if connected and there are notifications, bluetoothicon otherwise.
+    var settings = Sys.getDeviceSettings();
+    
+    if (indicatorType == INDICATOR_TYPE_BluetoothOrNotifications) {
+      if (settings.phoneConnected && (settings.notificationCount > 0)) {
+        indicatorType = INDICATOR_TYPE_Notifications;
+      } else {
+        indicatorType = INDICATOR_TYPE_Bluetooth;
+      }
+    }
+
+    if (indicatorType == INDICATOR_TYPE_Seconds) {
+      var clockTime = Sys.getClockTime();
+      var seconds = clockTime.sec.format("%02d");
+      dc.drawText(
+        x,
+        y,
+        gSecondsFont,
+        seconds,
+        Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
+      );
+      return;
+    }
+
+    dc.setColor(value ? gThemeColour : gMeterBackgroundColour, Graphics.COLOR_TRANSPARENT);
+
+    var char = "";
+    if (indicatorType == INDICATOR_TYPE_Bluetooth) {
+      char = "8";
+    } else if (indicatorType == INDICATOR_TYPE_Alarms) {
+      char = ":";
+    } else if (indicatorType == INDICATOR_TYPE_Notifications) {
+      char = "5";
+    } else if (indicatorType == INDICATOR_TYPE_DoNotDisturb) {
+      char = "J";
+    }
+
+    // Icon
+    dc.drawText(
+      x,
+      y,
+      gIconsFont,
+      char,
+      Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
+    );
+  }
 }

@@ -100,7 +100,7 @@ class MoonPhase {
     return M + C + P + PI;
   }
     
-  private function sunCoords(d) {
+  private function sunCoords(d) as Dictionary {
     var M = solarMeanAnomaly(d);
     var L = eclipticLongitude(M);
 
@@ -111,7 +111,7 @@ class MoonPhase {
   }
 
   // moon calculations, based on http://aa.quae.nl/en/reken/hemelpositie.html formulas
-	private function moonCoords(d) { 
+	private function moonCoords(d) as Dictionary { 
 		// geocentric ecliptic coordinates of the moon
 
     	var L = rad * (218.316d + 13.176396d * d); // ecliptic longitude

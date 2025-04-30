@@ -85,6 +85,16 @@
 	<string id="Pressure">Pressure</string>
 	<string id="Moonphase">Moonphase</string>
 	<string id="Seconds">Seconds</string>
+	<string id="None">None</string>
+	<string id="DoNotDisturb">Do not disturb</string>
+
+	<string id="IndicatorPosition">Position</string>
+	<string id="IndicatorPositionDynamic">Dynamic</string>
+	<string id="IndicatorPositionFixed">Fixed</string>
+
+	<string id="IndicatorAppearance">Appearance</string>
+	<string id="IndicatorAppearanceNormal">Normal</string>
+	<string id="IndicatorAppearanceHideWhenFalse">Hide when false</string>	
 
 	<!-- Internal use only. Required because fonts cannot be overridden by locale. Leave blank for no override. -->
 	<string id="DATE_FONT_OVERRIDE"></string>
