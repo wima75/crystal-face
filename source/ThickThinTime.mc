@@ -112,7 +112,7 @@ class ThickThinTime extends Ui.Drawable {
 		);
 
 		// If required, draw AM/PM after minutes, vertically centred.
-		if (amPmText.length() > 0) {
+		if (amPmText.length() > 0 && !gHideAmPm) {
 			dc.setColor(gThemeColour, Graphics.COLOR_TRANSPARENT);
 			x += dc.getTextWidthInPixels(minutes, minutesFont);
 			dc.drawText(

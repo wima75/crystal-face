@@ -19,6 +19,7 @@ var gMeterBackgroundColour;
 var gHoursColour;
 var gMinutesColour;
 var gIsMinutesBold;
+var gHideAmPm;
 
 var gNormalFont;
 var gIconsFont;
@@ -184,6 +185,9 @@ class CrystalView extends Ui.WatchFace {
 		// Update hours/minutes colours after theme colours have been set.
 		updateHoursMinutesColours();
 
+		gIsMinutesBold = App.getApp().getBooleanProperty("IsMinutesBold", false);
+		gHideAmPm = App.getApp().getBooleanProperty("HideAmPm", false);
+
 		if (CrystalApp has :checkPendingWebRequests) { // checkPendingWebRequests() can be excluded to save memory.
 			App.getApp().checkPendingWebRequests();
 		}
@@ -276,8 +280,6 @@ class CrystalView extends Ui.WatchFace {
 
 		var mco = App.getApp().getIntProperty("MinutesColourOverride", 0);
 		gMinutesColour = overrideColours[(mco < 0 || mco > 2) ? 0 : mco];
-
-		gIsMinutesBold = App.getApp().getBooleanProperty("IsMinutesBold", false);
 	}
 
 	function onSettingsChangedSinceLastDraw() {

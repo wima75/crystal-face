@@ -328,6 +328,10 @@
 		<settingConfig type="boolean"/>
 	</setting>
 
+	<setting propertyKey="@Properties.HideAmPm" title="@Strings.HideAmPm">
+		<settingConfig type="boolean"/>
+	</setting>
+
 	<setting propertyKey="@Properties.LocalTimeInCity" title="@Strings.LocalTimeInCityTitle">
 		<settingConfig type="alphaNumeric"/>
 	</setting>

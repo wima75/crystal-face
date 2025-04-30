@@ -7,6 +7,7 @@
 	<property id="HoursColourOverride" type="number">0</property>
 	<property id="MinutesColourOverride" type="number">1</property>
 	<property id="IsMinutesBold" type="boolean">true</property>
+	<property id="HideAmPm" type="boolean">true</property>
 
 	<property id="LeftGoalType" type="number">0</property>
 	<property id="RightGoalType" type="number">1</property>
