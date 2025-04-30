@@ -147,6 +147,7 @@ class CrystalView extends Ui.WatchFace {
 		mDrawables[:RightGoalMeter] = View.findDrawableById("RightGoalMeter");
 		mDrawables[:DataArea] = View.findDrawableById("DataArea");
 		mDrawables[:Indicators] = View.findDrawableById("Indicators");
+		mDrawables[:DateLine] = View.findDrawableById("DateLine");
 
 		// Use mTime instead.
 		// Cache reference to ThickThinTime, for use in low power mode. Saves nearly 5ms!
@@ -294,6 +295,7 @@ class CrystalView extends Ui.WatchFace {
 			mDataFields.onSettingsChanged();	
 
 			(mDrawables[:Indicators] as Indicators).onSettingsChanged();
+			(mDrawables[:DateLine] as DateLine).onSettingsChanged();
 		}
 
 		// If watch does not support per-second updates, and watch is sleeping, do not show seconds immediately, as they will not 

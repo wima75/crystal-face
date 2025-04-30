@@ -49,6 +49,8 @@
 
 	<property id="MoonPhaseAppearance" type="number">3</property>
 
+	<property id="DateFormat" type="number">1</property>
+
 	<property id="OWMKeyOverride" type="string"></property>
 
 </properties>

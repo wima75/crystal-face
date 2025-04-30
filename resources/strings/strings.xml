@@ -104,6 +104,10 @@
 	<string id="MoonPhaseAppearanceMidtoneColor">Midtone color</string>
 	<string id="MoonPhaseAppearanceMidtoneColorFullMoonLight">Midtone color, fullmoon light</string>
 
+	<string id="DateFormat">Date Format</string>
+	<string id="DateFormatDayOfWeekDayMonth">Day of week - day - month</string>
+	<string id="DateFormatDayOfWeekDay">Day of week - day</string>
+
 	<!-- Internal use only. Required because fonts cannot be overridden by locale. Leave blank for no override. -->
 	<string id="DATE_FONT_OVERRIDE"></string>
 

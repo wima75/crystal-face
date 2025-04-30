@@ -359,6 +359,13 @@
 		</settingConfig>
 	</setting>
 
+	<setting propertyKey="@Properties.DateFormat" title="@Strings.DateFormat">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.DateFormatDayOfWeekDayMonth</listEntry>
+			<listEntry value="1">@Strings.DateFormatDayOfWeekDay</listEntry>
+		</settingConfig>
+	</setting>
+
 	<setting propertyKey="@Properties.OWMKeyOverride" title="@Strings.OWMKeyOverride">
 		<settingConfig type="alphaNumeric" maxLength="32"/>
 	</setting>

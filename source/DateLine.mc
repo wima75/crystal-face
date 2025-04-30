@@ -20,6 +20,13 @@ class DateLine extends Ui.Drawable {
 
 	private var mFont;
 
+	private var _dateFormat = DateFormatDayOfWeekDayMonth;
+
+	private enum DateFormats {
+    DateFormatDayOfWeekDayMonth = 0,
+    //DateFormatDayOfWeekDay = 1,
+  }
+
 	typedef DateLineParams as {
 		:x as Number,
 		:y as Number,
@@ -46,6 +53,12 @@ class DateLine extends Ui.Drawable {
 		mX = params[:x];
 		mY = params[:y];
 		mYLine2 = params[:yLine2];
+
+		onSettingsChanged();
+	}
+
+	function onSettingsChanged() {
+		_dateFormat = getPropertyValue("DateFormat");
 	}
 	
 	// Centre date string horizontally, then alternate between dark and light mono colours.
@@ -74,25 +87,29 @@ class DateLine extends Ui.Drawable {
 			mDayOfWeekString = Ui.loadResource(resourceArray[mDayOfWeek - 1]).toUpper();
 		}
 
-		var month = now.month;
-		if (month != mMonth) {
-			mMonth = month;
+		if (_dateFormat == DateFormatDayOfWeekDayMonth) {
+			var month = now.month;
+			if (month != mMonth) {
+				mMonth = month;
 
-			resourceArray = [
-				rezStrings.Jan,
-				rezStrings.Feb,
-				rezStrings.Mar,
-				rezStrings.Apr,
-				rezStrings.May,
-				rezStrings.Jun,
-				rezStrings.Jul,
-				rezStrings.Aug,
-				rezStrings.Sep,
-				rezStrings.Oct,
-				rezStrings.Nov,
-				rezStrings.Dec
-				];
-			mMonthString = Ui.loadResource(resourceArray[mMonth - 1]).toUpper();
+				resourceArray = [
+					rezStrings.Jan,
+					rezStrings.Feb,
+					rezStrings.Mar,
+					rezStrings.Apr,
+					rezStrings.May,
+					rezStrings.Jun,
+					rezStrings.Jul,
+					rezStrings.Aug,
+					rezStrings.Sep,
+					rezStrings.Oct,
+					rezStrings.Nov,
+					rezStrings.Dec
+					];
+				mMonthString = Ui.loadResource(resourceArray[mMonth - 1]).toUpper();
+			}
+		} else {
+			mMonthString = "";
 		}
 
 		var day = now.day.format(INTEGER_FORMAT);

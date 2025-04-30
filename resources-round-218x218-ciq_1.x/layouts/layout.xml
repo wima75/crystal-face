@@ -38,7 +38,7 @@
 		<param name="batteryWidth">28</param>
 	</drawable>
 
-	<drawable id="Date" class="DateLine">
+	<drawable id="DateLine" class="DateLine">
 		<param name="y">69</param>
 	</drawable>
 
