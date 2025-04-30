@@ -27,6 +27,15 @@ Reviews:
 
 ## What's New
 
+### 3.0.0
+- Many new configuration options
+- Format minutes in bold
+- Separate Sunset and Sunrise field
+- Moonphase field
+- Seconds as indicator
+- Do not disturb indicator
+- Date format without month
+
 ### 2.7.1
 - Add support for vívoactive® 6.
 
