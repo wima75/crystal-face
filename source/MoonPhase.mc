@@ -16,13 +16,25 @@ using Toybox.Math as Math;
 
 class MoonPhase {
   var _moonPhase;
+  var _appearance = 0;
   var _lastSunMoonCalc = 20000101;
   
 	var PI = Math.PI;
 	var rad = PI / 180d;
   var e = rad * 23.4397d; // obliquity of the Earth
 
-  function getIcon(now as Gregorian.Info, moonChar as Char) as String {
+  private enum Appearance {
+    //MoonPhaseAppearanceDefaultThemeColor = 0,
+    MoonPhaseAppearanceLightColor = 1,
+    MoonPhaseAppearanceMidtoneColor = 2,
+    MoonPhaseAppearanceMidtoneColorFullMoonLight = 3
+  }
+
+  public function SetAppearance(appearance as Number) {
+    _appearance = appearance;
+  }
+
+  public function getIcon(now as Gregorian.Info, moonChar as Char) as Dictionary {
     var today = Gregorian.moment({:day => now.day, :month => now.month, :year => now.year, :hour => 0, :minute => 0, :second => 0});
     var thisCalc = now.year * 10000 + now.month * 100 + now.day;
 
@@ -37,23 +49,47 @@ class MoonPhase {
       _lastSunMoonCalc = thisCalc;
     }
 
+    var color = gThemeColour;
+    if (_appearance == MoonPhaseAppearanceLightColor) {
+      color = gMonoLightColour;
+    } else if (_appearance == MoonPhaseAppearanceMidtoneColor) {
+      color = gMeterBackgroundColour;
+    } else if (_appearance == MoonPhaseAppearanceMidtoneColorFullMoonLight) {
+      color = gMeterBackgroundColour;
+    }
+
     var moonCharNumber = moonChar.toNumber();
 
     if (_moonPhase == 0) {
-      return moonCharNumber.toChar().toString();
+      return {
+        "char" => moonCharNumber.toChar().toString(),
+        "color" => color
+      };
     }
 
     if (_moonPhase == 0.5) {
-      return (moonCharNumber + 4).toChar().toString();
+      if (_appearance == MoonPhaseAppearanceMidtoneColorFullMoonLight) {
+        color = gMonoLightColour;
+      }
+      return {
+        "char" => (moonCharNumber + 4).toChar().toString(),
+        "color" => color
+      };
     }
 
     if (_moonPhase < 0.5) {
       moonCharNumber += MathFunctions.Floor(_moonPhase / (0.5 / 3.0)).toNumber() + 1;
-      return moonCharNumber.toChar().toString();
+      return {
+        "char" => moonCharNumber.toChar().toString(),
+        "color" => color
+      };
     }
 
     moonCharNumber += (MathFunctions.Floor((_moonPhase-0.5) / (0.5 / 3.0))).toNumber() + 5;
-    return moonCharNumber.toChar().toString();
+    return {
+      "char" => moonCharNumber.toChar().toString(),
+      "color" => color
+    };
   }
 
   private function isFullMoon(d,m,y) {
@@ -100,7 +136,7 @@ class MoonPhase {
     return M + C + P + PI;
   }
     
-  private function sunCoords(d) {
+  private function sunCoords(d) as Dictionary {
     var M = solarMeanAnomaly(d);
     var L = eclipticLongitude(M);
 
@@ -111,7 +147,7 @@ class MoonPhase {
   }
 
   // moon calculations, based on http://aa.quae.nl/en/reken/hemelpositie.html formulas
-	private function moonCoords(d) { 
+	private function moonCoords(d) as Dictionary { 
 		// geocentric ecliptic coordinates of the moon
 
     	var L = rad * (218.316d + 13.176396d * d); // ecliptic longitude

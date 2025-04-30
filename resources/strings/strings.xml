@@ -17,6 +17,7 @@
 	<string id="HideSecondsTitle">Hide Seconds</string>
 	<string id="HideHoursLeadingZeroTitle">Hide Hours Leading Zero</string>
 	<string id="OWMKeyOverride">OpenWeatherMap API Key Override</string>
+	<string id="HideAmPm">Hide am and pm</string>
 
 	<string id="FieldCountTitle">Number Of Data Fields</string>
 	<string id="DataField1Title">Data Field 1</string>
@@ -27,6 +28,9 @@
 	<string id="Indicator1Title">Indicator 1</string>
 	<string id="Indicator2Title">Indicator 2</string>
 	<string id="Indicator3Title">Indicator 3</string>
+	<string id="Indicator4Title">Indicator 4</string>
+	<string id="Indicator5Title">Indicator 5</string>
+	<string id="Indicator6Title">Indicator 6</string>
 
 	<string id="FromTheme">(From Theme)</string>
 	<string id="MonoHighlight">Mono Highlight</string>
@@ -81,6 +85,28 @@
 	<string id="Humidity">Humidity</string>
 	<string id="Pressure">Pressure</string>
 	<string id="Moonphase">Moonphase</string>
+	<string id="Seconds">Seconds</string>
+	<string id="None">None</string>
+	<string id="DoNotDisturb">Do not disturb</string>
+
+	<string id="IndicatorPosition">Position</string>
+	<string id="IndicatorPositionDynamic">Dynamic</string>
+	<string id="IndicatorPositionFixed">Fixed</string>
+
+	<string id="IndicatorAppearance">Appearance</string>
+	<string id="IndicatorAppearanceNormal">Normal</string>
+	<string id="IndicatorAppearanceHideWhenFalse">Hide when false</string>
+	<string id="IndicatorAppearanceCombined1Default2Light">Combined Indicator: first default, second light</string>
+
+	<string id="MoonPhaseAppearance">Moon Phase Appearance</string>
+	<string id="MoonPhaseAppearanceDefaultThemeColor">Default theme color</string>
+	<string id="MoonPhaseAppearanceLightColor">Light color</string>
+	<string id="MoonPhaseAppearanceMidtoneColor">Midtone color</string>
+	<string id="MoonPhaseAppearanceMidtoneColorFullMoonLight">Midtone color, fullmoon light</string>
+
+	<string id="DateFormat">Date Format</string>
+	<string id="DateFormatDayOfWeekDayMonth">Day of week - day - month</string>
+	<string id="DateFormatDayOfWeekDay">Day of week - day</string>
 
 	<!-- Internal use only. Required because fonts cannot be overridden by locale. Leave blank for no override. -->
 	<string id="DATE_FONT_OVERRIDE"></string>

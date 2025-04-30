@@ -138,37 +138,171 @@
 		</settingConfig>
 	</setting>
 
-	<setting propertyKey="@Properties.IndicatorCount" title="@Strings.IndicatorCountTitle">
-		<settingConfig type="numeric" min="0" max="3" required="true"/>
-	</setting>
-
-	<setting propertyKey="@Properties.Indicator1Type" title="@Strings.Indicator1Title">
+	<setting propertyKey="@Properties.Indicator11Type" title="@Strings.Indicator1Title">
 		<settingConfig type="list">
+			<listEntry value="-1">@Strings.None</listEntry>
 			<listEntry value="0">@Strings.Bluetooth</listEntry>
 			<listEntry value="1">@Strings.Alarms</listEntry>
 			<listEntry value="2">@Strings.Notifications</listEntry>
 			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
 			<listEntry value="4">@Strings.Battery</listEntry>
+			<listEntry value="5">@Strings.DoNotDisturb</listEntry>
+			<listEntry value="6">@Strings.Seconds</listEntry>
 		</settingConfig>
 	</setting>
 
-	<setting propertyKey="@Properties.Indicator2Type" title="@Strings.Indicator2Title">
+	<setting propertyKey="@Properties.Indicator11Position" title="@Strings.IndicatorPosition">
 		<settingConfig type="list">
-			<listEntry value="0">@Strings.Bluetooth</listEntry>
-			<listEntry value="1">@Strings.Alarms</listEntry>
-			<listEntry value="2">@Strings.Notifications</listEntry>
-			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
-			<listEntry value="4">@Strings.Battery</listEntry>
+			<listEntry value="0">@Strings.IndicatorPositionDynamic</listEntry>
+			<listEntry value="1">@Strings.IndicatorPositionFixed</listEntry>
 		</settingConfig>
 	</setting>
 
-	<setting propertyKey="@Properties.Indicator3Type" title="@Strings.Indicator3Title">
+	<setting propertyKey="@Properties.Indicator11Appearance" title="@Strings.IndicatorAppearance">
 		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
+			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator12Type" title="@Strings.Indicator2Title">
+		<settingConfig type="list">
+			<listEntry value="-1">@Strings.None</listEntry>
 			<listEntry value="0">@Strings.Bluetooth</listEntry>
 			<listEntry value="1">@Strings.Alarms</listEntry>
 			<listEntry value="2">@Strings.Notifications</listEntry>
 			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
 			<listEntry value="4">@Strings.Battery</listEntry>
+			<listEntry value="5">@Strings.DoNotDisturb</listEntry>
+			<listEntry value="6">@Strings.Seconds</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator12Position" title="@Strings.IndicatorPosition">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorPositionDynamic</listEntry>
+			<listEntry value="1">@Strings.IndicatorPositionFixed</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator12Appearance" title="@Strings.IndicatorAppearance">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
+			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator13Type" title="@Strings.Indicator3Title">
+		<settingConfig type="list">
+			<listEntry value="-1">@Strings.None</listEntry>
+			<listEntry value="0">@Strings.Bluetooth</listEntry>
+			<listEntry value="1">@Strings.Alarms</listEntry>
+			<listEntry value="2">@Strings.Notifications</listEntry>
+			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
+			<listEntry value="4">@Strings.Battery</listEntry>
+			<listEntry value="5">@Strings.DoNotDisturb</listEntry>
+			<listEntry value="6">@Strings.Seconds</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator13Position" title="@Strings.IndicatorPosition">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorPositionDynamic</listEntry>
+			<listEntry value="1">@Strings.IndicatorPositionFixed</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator13Appearance" title="@Strings.IndicatorAppearance">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
+			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator21Type" title="@Strings.Indicator4Title">
+		<settingConfig type="list">
+			<listEntry value="-1">@Strings.None</listEntry>
+			<listEntry value="0">@Strings.Bluetooth</listEntry>
+			<listEntry value="1">@Strings.Alarms</listEntry>
+			<listEntry value="2">@Strings.Notifications</listEntry>
+			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
+			<listEntry value="4">@Strings.Battery</listEntry>
+			<listEntry value="5">@Strings.DoNotDisturb</listEntry>
+			<listEntry value="6">@Strings.Seconds</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator21Position" title="@Strings.IndicatorPosition">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorPositionDynamic</listEntry>
+			<listEntry value="1">@Strings.IndicatorPositionFixed</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator21Appearance" title="@Strings.IndicatorAppearance">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
+			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator22Type" title="@Strings.Indicator5Title">
+		<settingConfig type="list">
+			<listEntry value="-1">@Strings.None</listEntry>
+			<listEntry value="0">@Strings.Bluetooth</listEntry>
+			<listEntry value="1">@Strings.Alarms</listEntry>
+			<listEntry value="2">@Strings.Notifications</listEntry>
+			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
+			<listEntry value="4">@Strings.Battery</listEntry>
+			<listEntry value="5">@Strings.DoNotDisturb</listEntry>
+			<listEntry value="6">@Strings.Seconds</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator22Position" title="@Strings.IndicatorPosition">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorPositionDynamic</listEntry>
+			<listEntry value="1">@Strings.IndicatorPositionFixed</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator22Appearance" title="@Strings.IndicatorAppearance">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
+			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator23Type" title="@Strings.Indicator6Title">
+		<settingConfig type="list">
+			<listEntry value="-1">@Strings.None</listEntry>
+			<listEntry value="0">@Strings.Bluetooth</listEntry>
+			<listEntry value="1">@Strings.Alarms</listEntry>
+			<listEntry value="2">@Strings.Notifications</listEntry>
+			<listEntry value="3">@Strings.BluetoothOrNotifications</listEntry>
+			<listEntry value="4">@Strings.Battery</listEntry>
+			<listEntry value="5">@Strings.DoNotDisturb</listEntry>
+			<listEntry value="6">@Strings.Seconds</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator23Position" title="@Strings.IndicatorPosition">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorPositionDynamic</listEntry>
+			<listEntry value="1">@Strings.IndicatorPositionFixed</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.Indicator23Appearance" title="@Strings.IndicatorAppearance">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
+			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
 		</settingConfig>
 	</setting>
 
@@ -200,6 +334,10 @@
 		<settingConfig type="boolean"/>
 	</setting>
 
+	<setting propertyKey="@Properties.HideAmPm" title="@Strings.HideAmPm">
+		<settingConfig type="boolean"/>
+	</setting>
+
 	<setting propertyKey="@Properties.LocalTimeInCity" title="@Strings.LocalTimeInCityTitle">
 		<settingConfig type="alphaNumeric"/>
 	</setting>
@@ -209,6 +347,22 @@
 			<listEntry value="0">@Strings.AllSegments</listEntry>
 			<listEntry value="1">@Strings.FilledSegments</listEntry>
 			<listEntry value="2">@Strings.Hidden</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.MoonPhaseAppearance" title="@Strings.MoonPhaseAppearance">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.MoonPhaseAppearanceDefaultThemeColor</listEntry>
+			<listEntry value="1">@Strings.MoonPhaseAppearanceLightColor</listEntry>
+			<listEntry value="2">@Strings.MoonPhaseAppearanceMidtoneColor</listEntry>
+			<listEntry value="3">@Strings.MoonPhaseAppearanceMidtoneColorFullMoonLight</listEntry>
+		</settingConfig>
+	</setting>
+
+	<setting propertyKey="@Properties.DateFormat" title="@Strings.DateFormat">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.DateFormatDayOfWeekDayMonth</listEntry>
+			<listEntry value="1">@Strings.DateFormatDayOfWeekDay</listEntry>
 		</settingConfig>
 	</setting>
 

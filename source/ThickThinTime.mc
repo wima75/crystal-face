@@ -6,7 +6,7 @@ import Toybox.Lang;
 
 class ThickThinTime extends Ui.Drawable {
 
-	private var mBoldFont, mLightFont, mSecondsFont;
+	private var mBoldFont, mLightFont/*, mSecondsFont*/;
 
 	// "y" parameter passed to drawText(), read from layout.xml.
 	private var mSecondsY;
@@ -58,7 +58,7 @@ class ThickThinTime extends Ui.Drawable {
 
 		mBoldFont = Ui.loadResource(Rez.Fonts.BoldFont);
 		mLightFont = Ui.loadResource(Rez.Fonts.LightFont);
-		mSecondsFont = Ui.loadResource(Rez.Fonts.SecondsFont);
+		//mSecondsFont = Ui.loadResource(Rez.Fonts.SecondsFont);
 	}
 
 	function setHideSeconds(hideSeconds) {
@@ -112,13 +112,13 @@ class ThickThinTime extends Ui.Drawable {
 		);
 
 		// If required, draw AM/PM after minutes, vertically centred.
-		if (amPmText.length() > 0) {
+		if (amPmText.length() > 0 && !gHideAmPm) {
 			dc.setColor(gThemeColour, Graphics.COLOR_TRANSPARENT);
 			x += dc.getTextWidthInPixels(minutes, minutesFont);
 			dc.drawText(
 				x + AM_PM_X_OFFSET, // Breathing space between minutes and AM/PM.
 				halfDCHeight,
-				mSecondsFont,
+				gSecondsFont,
 				amPmText,
 				Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER
 			);
@@ -162,7 +162,7 @@ class ThickThinTime extends Ui.Drawable {
 		dc.drawText(
 			mSecondsClipRectX + mSecondsClipXAdjust,
 			mSecondsY,
-			mSecondsFont,
+			gSecondsFont,
 			seconds,
 			Graphics.TEXT_JUSTIFY_LEFT
 		);

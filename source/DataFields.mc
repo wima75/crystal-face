@@ -90,6 +90,8 @@ class DataFields extends Ui.Drawable {
 		// #123 Protect against null or unexpected type e.g. String.
 		mFieldCount = App.getApp().getIntProperty("FieldCount", 3);
 
+		_moonPhase.SetAppearance(App.getApp().getIntProperty("MoonPhaseAppearance", 0));
+		
 		/* switch (mFieldCount) {
 			case 3:
 				mMaxFieldLength = 4;
@@ -313,10 +315,10 @@ class DataFields extends Ui.Drawable {
 
 			} else if (fieldType == FIELD_TYPE_MOONPHASE) {
 				font = gIconsFont;
-				colour = gMonoLightColour;
-
 				var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-				icon = _moonPhase.getIcon(now, 'B');
+				var moonIcon = _moonPhase.getIcon(now, 'B') as Dictionary;
+				colour = moonIcon["color"];
+				icon = moonIcon["char"];
 			} else {
 				font = gIconsFont;
 

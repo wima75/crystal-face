@@ -19,9 +19,11 @@ var gMeterBackgroundColour;
 var gHoursColour;
 var gMinutesColour;
 var gIsMinutesBold;
+var gHideAmPm;
 
 var gNormalFont;
 var gIconsFont;
+var gSecondsFont;
 
 const SCREEN_MULTIPLIER = (Sys.getDeviceSettings().screenWidth < 360) ? 1 : 2;
 //const BATTERY_LINE_WIDTH = 2;
@@ -134,6 +136,7 @@ class CrystalView extends Ui.WatchFace {
 	// Load your resources here
 	function onLayout(dc) {
 		gIconsFont = Ui.loadResource(Rez.Fonts.IconsFont);
+		gSecondsFont = Ui.loadResource(Rez.Fonts.SecondsFont);
 
 		setLayout(Rez.Layouts.WatchFace(dc));
 		cacheDrawables();
@@ -144,6 +147,7 @@ class CrystalView extends Ui.WatchFace {
 		mDrawables[:RightGoalMeter] = View.findDrawableById("RightGoalMeter");
 		mDrawables[:DataArea] = View.findDrawableById("DataArea");
 		mDrawables[:Indicators] = View.findDrawableById("Indicators");
+		mDrawables[:DateLine] = View.findDrawableById("DateLine");
 
 		// Use mTime instead.
 		// Cache reference to ThickThinTime, for use in low power mode. Saves nearly 5ms!
@@ -181,6 +185,9 @@ class CrystalView extends Ui.WatchFace {
 
 		// Update hours/minutes colours after theme colours have been set.
 		updateHoursMinutesColours();
+
+		gIsMinutesBold = App.getApp().getBooleanProperty("IsMinutesBold", false);
+		gHideAmPm = App.getApp().getBooleanProperty("HideAmPm", false);
 
 		if (CrystalApp has :checkPendingWebRequests) { // checkPendingWebRequests() can be excluded to save memory.
 			App.getApp().checkPendingWebRequests();
@@ -274,8 +281,6 @@ class CrystalView extends Ui.WatchFace {
 
 		var mco = App.getApp().getIntProperty("MinutesColourOverride", 0);
 		gMinutesColour = overrideColours[(mco < 0 || mco > 2) ? 0 : mco];
-
-		gIsMinutesBold = App.getApp().getBooleanProperty("IsMinutesBold", false);
 	}
 
 	function onSettingsChangedSinceLastDraw() {
@@ -290,6 +295,7 @@ class CrystalView extends Ui.WatchFace {
 			mDataFields.onSettingsChanged();	
 
 			(mDrawables[:Indicators] as Indicators).onSettingsChanged();
+			(mDrawables[:DateLine] as DateLine).onSettingsChanged();
 		}
 
 		// If watch does not support per-second updates, and watch is sleeping, do not show seconds immediately, as they will not 
