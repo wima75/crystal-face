@@ -32,7 +32,8 @@ class Indicators extends Ui.Drawable {
 
   private enum IndicatorAppearance {
     //INDICATOR_APPEARANCE_Normal = 0,
-    INDICATOR_APPEARANCE_HideWhenFalse = 1
+    INDICATOR_APPEARANCE_HideWhenFalse = 1,
+    INDICATOR_APPEARANCE_Combined1Default2Light = 2
   }
 
   typedef IndicatorsParams as {
@@ -62,18 +63,14 @@ class Indicators extends Ui.Drawable {
         i,
         getPropertyValue("Indicator1" + (i + 1) + "Type"),
         getPropertyValue("Indicator1" + (i + 1) + "Position"),
-        getPropertyValue("Indicator1" + (i + 1) + "Appearance"),
-        getPropertyValue("Indicator1" + (i + 1) + "Color1"),
-        getPropertyValue("Indicator1" + (i + 1) + "Color2")
+        getPropertyValue("Indicator1" + (i + 1) + "Appearance")
       );
       _indicators1.put(i, indicator);
       indicator = new Indicator(
         i,
         getPropertyValue("Indicator2" + (i + 1) + "Type"),
         getPropertyValue("Indicator2" + (i + 1) + "Position"),
-        getPropertyValue("Indicator2" + (i + 1) + "Appearance"),
-        getPropertyValue("Indicator2" + (i + 1) + "Color1"),
-        getPropertyValue("Indicator2" + (i + 1) + "Color2")
+        getPropertyValue("Indicator2" + (i + 1) + "Appearance")
       );
       _indicators2.put(i, indicator);
     }
@@ -303,6 +300,7 @@ class Indicators extends Ui.Drawable {
     if (indicatorType == INDICATOR_TYPE_Seconds) {
       var clockTime = Sys.getClockTime();
       var seconds = clockTime.sec.format("%02d");
+      dc.setColor(gThemeColour, Graphics.COLOR_TRANSPARENT);
       dc.drawText(
         x,
         y,
@@ -315,12 +313,17 @@ class Indicators extends Ui.Drawable {
 
     dc.setColor(value ? gThemeColour : gMeterBackgroundColour, Graphics.COLOR_TRANSPARENT);
 
+    var appearance = indicator.getAppearance();
+
     var char = "";
     if (indicatorType == INDICATOR_TYPE_Bluetooth) {
       char = "8";
     } else if (indicatorType == INDICATOR_TYPE_Alarms) {
       char = ":";
     } else if (indicatorType == INDICATOR_TYPE_Notifications) {
+      if (appearance == INDICATOR_APPEARANCE_Combined1Default2Light) {
+        dc.setColor(gMonoLightColour, Graphics.COLOR_TRANSPARENT);
+      }
       char = "5";
     } else if (indicatorType == INDICATOR_TYPE_DoNotDisturb) {
       char = "J";

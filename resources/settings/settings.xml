@@ -162,6 +162,7 @@
 		<settingConfig type="list">
 			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
 			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
 		</settingConfig>
 	</setting>
 
@@ -189,6 +190,7 @@
 		<settingConfig type="list">
 			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
 			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
 		</settingConfig>
 	</setting>
 
@@ -216,6 +218,7 @@
 		<settingConfig type="list">
 			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
 			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
 		</settingConfig>
 	</setting>
 
@@ -243,6 +246,7 @@
 		<settingConfig type="list">
 			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
 			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
 		</settingConfig>
 	</setting>
 
@@ -270,6 +274,7 @@
 		<settingConfig type="list">
 			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
 			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
 		</settingConfig>
 	</setting>
 
@@ -297,6 +302,7 @@
 		<settingConfig type="list">
 			<listEntry value="0">@Strings.IndicatorAppearanceNormal</listEntry>
 			<listEntry value="1">@Strings.IndicatorAppearanceHideWhenFalse</listEntry>
+			<listEntry value="2">@Strings.IndicatorAppearanceCombined1Default2Light</listEntry>
 		</settingConfig>
 	</setting>
 

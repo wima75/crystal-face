@@ -29,12 +29,6 @@
 	<property id="Indicator11Appearance" type="number">1</property>
 	<property id="Indicator12Appearance" type="number">1</property>
 	<property id="Indicator13Appearance" type="number">0</property>
-	<property id="Indicator11Color1" type="number">0</property>
-	<property id="Indicator11Color2" type="number">0</property>
-	<property id="Indicator12Color1" type="number">0</property>
-	<property id="Indicator12Color2" type="number">0</property>
-	<property id="Indicator13Color1" type="number">0</property>
-	<property id="Indicator13Color2" type="number">0</property>
 
 	<property id="Indicator21Type" type="number">3</property>
 	<property id="Indicator22Type" type="number">-1</property>
@@ -42,15 +36,9 @@
 	<property id="Indicator21Position" type="number">0</property>
 	<property id="Indicator22Position" type="number">0</property>
 	<property id="Indicator23Position" type="number">1</property>
-	<property id="Indicator21Appearance" type="number">0</property>
+	<property id="Indicator21Appearance" type="number">2</property>
 	<property id="Indicator22Appearance" type="number">0</property>
 	<property id="Indicator23Appearance" type="number">0</property>
-	<property id="Indicator21Color1" type="number">0</property>
-	<property id="Indicator21Color2" type="number">0</property>
-	<property id="Indicator22Color1" type="number">0</property>
-	<property id="Indicator22Color2" type="number">0</property>
-	<property id="Indicator23Color1" type="number">0</property>
-	<property id="Indicator23Color2" type="number">0</property>
 
 	<property id="LocalTimeInCity" type="string"></property>
 
