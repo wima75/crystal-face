@@ -72,6 +72,9 @@ class ThickThinTime extends Ui.Drawable {
 
 	function drawHoursMinutes(dc) {
 		var clockTime = Sys.getClockTime();
+		clockTime.hour = 12;
+		clockTime.min = 34;
+
 		var formattedTime = App.getApp().getFormattedTime(clockTime.hour, clockTime.min);
 		formattedTime[:amPm] = formattedTime[:amPm].toUpper();
 

@@ -26,8 +26,8 @@
 	<property id="Indicator11Position" type="number">0</property>
 	<property id="Indicator12Position" type="number">0</property>
 	<property id="Indicator13Position" type="number">0</property>
-	<property id="Indicator11Appearance" type="number">1</property>
-	<property id="Indicator12Appearance" type="number">1</property>
+	<property id="Indicator11Appearance" type="number">0</property>
+	<property id="Indicator12Appearance" type="number">0</property>
 	<property id="Indicator13Appearance" type="number">0</property>
 
 	<property id="Indicator21Type" type="number">3</property>

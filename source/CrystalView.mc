@@ -59,8 +59,9 @@ function drawBatteryMeter(dc, x, y, width, height) {
 
 	// Fill.
 	// #8: battery returned as float. Use floor() to match native. Must match getValueForFieldType().
-	var batteryLevel = Math.floor(Sys.getSystemStats().battery);		
-
+	var batteryLevel = Math.floor(Sys.getSystemStats().battery);
+	batteryLevel = 19.0;
+	
 	// Fill colour based on battery level.
 	var fillColour;
 	if (batteryLevel <= /* BATTERY_LEVEL_CRITICAL */ 10) {
@@ -362,6 +363,10 @@ class CrystalView extends Ui.WatchFace {
 		};
 
 		var info = ActivityMonitor.getInfo();
+		info.steps = 3800;
+		info.stepGoal = 5000;
+		info.floorsClimbed = 6;
+		info.floorsClimbedGoal = 10;
 
 		switch(type) {
 			case GOAL_TYPE_STEPS:

@@ -88,6 +88,7 @@ class MoveBar extends Ui.Drawable {
 
 		var info = ActivityMonitor.getInfo();
 		var currentMoveBarLevel = info.moveBarLevel;
+		currentMoveBarLevel = 3;
 
 		// Calculate current width here, now that DC is accessible.
 		// Balance head/tail positions in full width mode.

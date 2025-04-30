@@ -299,6 +299,7 @@ class Indicators extends Ui.Drawable {
 
     if (indicatorType == INDICATOR_TYPE_Seconds) {
       var clockTime = Sys.getClockTime();
+      clockTime.sec = 56;
       var seconds = clockTime.sec.format("%02d");
       dc.setColor(gThemeColour, Graphics.COLOR_TRANSPARENT);
       dc.drawText(

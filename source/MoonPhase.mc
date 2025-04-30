@@ -59,6 +59,7 @@ class MoonPhase {
     }
 
     var moonCharNumber = moonChar.toNumber();
+    _moonPhase = 0.1;
 
     if (_moonPhase == 0) {
       return {

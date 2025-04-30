@@ -22,8 +22,8 @@ typedef FormattedTime as {
 // Current location retrieved/saved in checkPendingWebRequests().
 // Persistence allows weather and sunrise/sunset features to be used after watch face restart, even if watch no longer has current
 // location available.
-var gLocationLat = null;
-var gLocationLng = null;
+var gLocationLat = 7.78;
+var gLocationLng = 46.91;
 
 (:properties_and_storage,:background)
 function getPropertyValue(key as PropertyKeyType) as PropertyValueType {

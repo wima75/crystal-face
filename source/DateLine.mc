@@ -70,6 +70,8 @@ class DateLine extends Ui.Drawable {
 		// "Thurs" instead of "Thu".
 		// Load strings just-in-time, to save memory. They rarely change, so worthwhile trade-off.
 		var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+		now.day_of_week = 4;
+		now.day = 30;
 
 		var dayOfWeek = now.day_of_week;
 		if (dayOfWeek != mDayOfWeek) {
