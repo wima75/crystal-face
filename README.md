@@ -28,6 +28,9 @@ Reviews:
 
 ## What's New
 
+### 3.0.1
+- Hide seconds in always active mode
+
 ### 3.0.0
 - Many new configuration options
 - Format minutes in bold

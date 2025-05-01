@@ -57,6 +57,19 @@ class Indicators extends Ui.Drawable {
     onSettingsChanged();
   }
 
+  public function setIsSleeping(isSleeping as Boolean) {
+    for (var i = 0; i < 3; i++) {
+      var indicator = _indicators1.get(i);
+      if (indicator.getType() == INDICATOR_TYPE_Seconds) {
+        indicator.setIsHidden(isSleeping);
+      }
+      indicator = _indicators2.get(i);
+      if (indicator.getType() == INDICATOR_TYPE_Seconds) {
+        indicator.setIsHidden(isSleeping);
+      }
+    }
+  }
+
   function onSettingsChanged() {
     for (var i = 0; i < 3; i++) {
       var indicator = new Indicator(
@@ -196,6 +209,9 @@ class Indicators extends Ui.Drawable {
     var index = 0;
     for (var i = 0; i < indicators.size(); i++) {
       var indicator = indicators.get(i);
+      if (indicator.getIsHidden()) {
+        continue;
+      }
       if (indicator.getType() != INDICATOR_TYPE_None) {
         var indicatorValue = getIndicatorValue(indicator.getType());
         indicator.setValue(indicatorValue);

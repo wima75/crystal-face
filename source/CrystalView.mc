@@ -458,6 +458,8 @@ class CrystalView extends Ui.WatchFace {
 			mIsBurnInProtection = false;
 			mBurnInProtectionChangedSinceLastDraw = true;
 		}
+
+		(mDrawables[:Indicators] as Indicators).setIsSleeping(false);
 	}
 
 	// Terminate any active timers and prepare for slow updates.
@@ -480,6 +482,8 @@ class CrystalView extends Ui.WatchFace {
 			mIsBurnInProtection = true;
 			mBurnInProtectionChangedSinceLastDraw = true;
 		}
+
+		(mDrawables[:Indicators] as Indicators).setIsSleeping(true);
 
 		Ui.requestUpdate();
 	}

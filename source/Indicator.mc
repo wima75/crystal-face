@@ -6,6 +6,7 @@ class Indicator {
   var _position as Number;
   var _appearance as Number;
   var _value = false;
+  var _isHidden = false;
 
   public function initialize(
     index as Number,
@@ -40,5 +41,13 @@ class Indicator {
 
   public function getValue() as Boolean {
     return _value;
+  }
+
+  public function setIsHidden(isHidden as Boolean) {
+    _isHidden = isHidden;
+  }
+
+  public function getIsHidden() as Boolean {
+    return _isHidden;
   }
 }
