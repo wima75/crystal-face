@@ -28,6 +28,9 @@ Reviews:
 
 ## What's New
 
+### 3.0.2
+- Improved battery consumption
+
 ### 3.0.1
 - Hide seconds in always active mode
 

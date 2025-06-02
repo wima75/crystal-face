@@ -1,6 +1,6 @@
 <properties>
 
-	<property id="AppVersion" type="string">3.0.0</property>
+	<property id="AppVersion" type="string">3.0.2</property>
 
 	<property id="Theme" type="number">0</property>
 
@@ -32,7 +32,7 @@
 
 	<property id="Indicator21Type" type="number">3</property>
 	<property id="Indicator22Type" type="number">-1</property>
-	<property id="Indicator23Type" type="number">6</property>
+	<property id="Indicator23Type" type="number">-1</property>
 	<property id="Indicator21Position" type="number">0</property>
 	<property id="Indicator22Position" type="number">0</property>
 	<property id="Indicator23Position" type="number">1</property>

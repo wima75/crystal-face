@@ -7,7 +7,7 @@ using Toybox.ActivityMonitor as ActivityMonitor;
 using Toybox.SensorHistory as SensorHistory;
 
 using Toybox.Time;
-using Toybox.Time.Gregorian;
+using Toybox.Time.Gregorian as Calendar;
 
 import Toybox.Lang;
 
@@ -60,7 +60,14 @@ class DataFields extends Ui.Drawable {
 	// private const MI_PER_KM = 0.621371;
 	// private const FT_PER_M = 3.28084;
 
-	private var _moonPhase = new MoonPhase();
+	private var _moonField = new MoonField();
+	private var _sunField = new SunField();
+	private var _now;
+	private var _nowInfo;
+	private var _lastPerDayCalc = 20000101;
+	private var _lastLon = 1000.0d;
+	private var _lastLat = 1000.0d;
+	private var _today;
 
 	typedef DataFieldsParams as {
 		:left as Number,
@@ -90,7 +97,7 @@ class DataFields extends Ui.Drawable {
 		// #123 Protect against null or unexpected type e.g. String.
 		mFieldCount = App.getApp().getIntProperty("FieldCount", 3);
 
-		_moonPhase.SetAppearance(App.getApp().getIntProperty("MoonPhaseAppearance", 0));
+		_moonField.SetAppearance(App.getApp().getIntProperty("MoonPhaseAppearance", 0));
 		
 		/* switch (mFieldCount) {
 			case 3:
@@ -113,6 +120,8 @@ class DataFields extends Ui.Drawable {
 			mWeatherIconsFont = null;
 			mWeatherIconsSubset = null;
 		}
+
+		_sunField.SetIsCalculationNeccessary(false);
 	}
 
 	function draw(dc) {
@@ -122,6 +131,26 @@ class DataFields extends Ui.Drawable {
 	function update(dc, isPartialUpdate) {
 		if (isPartialUpdate && !mHasLiveHR) {
 			return;
+		}
+
+		_now = Now();
+		_nowInfo = Calendar.info(_now, Time.FORMAT_SHORT);
+		_today = Calendar.moment({:day => _nowInfo.day, :month => _nowInfo.month, :year => _nowInfo.year, :hour => 0, :minute => 0, :second => 0});
+
+		var thisCalc = _nowInfo.year * 10000 + _nowInfo.month * 100 + _nowInfo.day;
+
+		if (gLocationLat != null) {
+			var dlon = _lastLon - gLocationLng;
+			var dlat = _lastLat - gLocationLat;
+			if (dlon > 0.1 || dlon < -0.1 || dlat > 0.1 || dlat < -0.1) {
+				_lastLon = gLocationLng;
+				_lastLat = gLocationLat;
+				_sunField.SetIsCalculationNeccessary(true);
+			}
+		}
+		if (thisCalc > _lastPerDayCalc) {
+			_lastPerDayCalc = thisCalc;
+			_sunField.SetIsCalculationNeccessary(false);
 		}
 
 		var fieldTypes = App.getApp().mFieldTypes;
@@ -218,6 +247,20 @@ class DataFields extends Ui.Drawable {
 		// Grey out icon if no value was retrieved.
 		// #37 Do not grey out battery icon (getValueForFieldType() returns empty string).
 		var colour = (value.length() == 0) ? gMeterBackgroundColour : gThemeColour;
+		var font;
+
+		if (result["icon"]) {
+			dc.setColor(colour, Graphics.COLOR_TRANSPARENT);
+			font = gIconsFont;
+			dc.drawText(
+				x,
+				mTop,
+				font,
+				result["icon"],
+				Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
+			);
+			return;
+		}
 
 		// Battery.
 		if ((fieldType == FIELD_TYPE_BATTERY) || (fieldType == FIELD_TYPE_BATTERY_HIDE_PERCENT)) {
@@ -277,13 +320,6 @@ class DataFields extends Ui.Drawable {
 
 		// Other icons.
 		} else {
-
-			// #19 Show sunrise icon instead of default sunset icon, if sunrise is next.
-			if ((fieldType == FIELD_TYPE_SUNRISE_SUNSET) && (result["isSunriseNext"] == true)) {
-				fieldType = FIELD_TYPE_SUNRISE;
-			}
-
-			var font;
 			var icon;
 			if (fieldType == FIELD_TYPE_WEATHER) {
 
@@ -315,8 +351,8 @@ class DataFields extends Ui.Drawable {
 
 			} else if (fieldType == FIELD_TYPE_MOONPHASE) {
 				font = gIconsFont;
-				var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-				var moonIcon = _moonPhase.getIcon(now, 'B') as Dictionary;
+				var moonPhase = _sunField.GetMoonIllumination(_today);
+				var moonIcon = _moonField.getIcon(moonPhase, 'B') as Dictionary;
 				colour = moonIcon["color"];
 				icon = moonIcon["char"];
 			} else {
@@ -324,9 +360,6 @@ class DataFields extends Ui.Drawable {
 
 				// Map fieldType to icon font char.
 				icon = {
-					FIELD_TYPE_SUNRISE => ">",
-					FIELD_TYPE_SUNSET => "?",
-
 					FIELD_TYPE_HEART_RATE => "3",
 					FIELD_TYPE_HR_LIVE_5S => "3",
 					// FIELD_TYPE_BATTERY => "4",
@@ -339,8 +372,6 @@ class DataFields extends Ui.Drawable {
 					FIELD_TYPE_TEMPERATURE => "<",
 					// FIELD_TYPE_WEATHER => "<",
 					// LIVE_HR_SPOT => "=",
-
-					FIELD_TYPE_SUNRISE_SUNSET => "?",
 					FIELD_TYPE_PRESSURE => "@",
 					FIELD_TYPE_HUMIDITY => "A"
 				}[fieldType];
@@ -391,7 +422,6 @@ class DataFields extends Ui.Drawable {
 		var temperature;
 		var weather;
 		var weatherValue;
-		var sunTimes;
 		var unit;
 
 		switch (type) {
@@ -511,67 +541,19 @@ class DataFields extends Ui.Drawable {
 			case FIELD_TYPE_SUNRISE:
 			case FIELD_TYPE_SUNSET:
 			
-				if (gLocationLat != null) {
-					var nextSunEvent = 0;
-					var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-
-					// Convert to same format as sunTimes, for easier comparison. Add a minute, so that e.g. if sun rises at
-					// 07:38:17, then 07:38 is already consided daytime (seconds not shown to user).
-					now = now.hour + ((now.min + 1) / 60.0);
-					//Sys.println(now);
-
-					// Get today's sunrise/sunset times in current time zone.
-					sunTimes = getSunTimes(gLocationLat, gLocationLng, null, /* tomorrow */ false);
-					//Sys.println(sunTimes);
-
-					// If sunrise/sunset happens today.
-					var sunriseSunsetToday = ((sunTimes[0] != null) && (sunTimes[1] != null));
-					if (sunriseSunsetToday) {
-						if (type == FIELD_TYPE_SUNRISE) {
-							nextSunEvent = sunTimes[0];
-						} else if (type == FIELD_TYPE_SUNSET) {
-							nextSunEvent = sunTimes[1];
-						} else {
-
-							// Before sunrise today: today's sunrise is next.
-							if (now < sunTimes[0]) {
-								nextSunEvent = sunTimes[0];
-								result["isSunriseNext"] = true;
-
-							// After sunrise today, before sunset today: today's sunset is next.
-							} else if (now < sunTimes[1]) {
-								nextSunEvent = sunTimes[1];
-
-							// After sunset today: tomorrow's sunrise (if any) is next.
-							} else {
-								sunTimes = getSunTimes(gLocationLat, gLocationLng, null, /* tomorrow */ true);
-								nextSunEvent = sunTimes[0];
-								result["isSunriseNext"] = true;
-							}
-						}
-					}
-
-					// Sun never rises/sets today.
-					if (!sunriseSunsetToday) {
-						value = "---";
-
-						// Sun never rises: sunrise is next, but more than a day from now.
-						if (type == FIELD_TYPE_SUNRISE_SUNSET && sunTimes[0] == null) {
-							result["isSunriseNext"] = true;
-						}
-
-					// We have a sunrise/sunset time.
+					if (type == FIELD_TYPE_SUNRISE) {
+						var field = _sunField.GetSunrise(_today, gLocationLat, gLocationLng);
+						value = field["value"];
+						result["icon"] = field["icon"];
+					} else if (type == FIELD_TYPE_SUNSET) {
+						var field = _sunField.GetSunset(_today, gLocationLat, gLocationLng);
+						value = field["value"];
+						result["icon"] = field["icon"];
 					} else {
-						var hour = Math.floor(nextSunEvent).toLong() % 24;
-						var min = Math.floor((nextSunEvent - Math.floor(nextSunEvent)) * 60); // Math.floor(fractional_part * 60)
-						value = App.getApp().getFormattedTime(hour, min);
-						value = value[:hour] + ":" + value[:min] + value[:amPm]; 
+						var field = _sunField.GetSunriseSunset(_now, gLocationLat, gLocationLng);
+						value = field["value"];
+						result["icon"] = field["icon"];
 					}
-
-				// Waiting for location.
-				} else {
-					value = "gps?";
-				}
 
 				break;
 
@@ -650,116 +632,7 @@ class DataFields extends Ui.Drawable {
 		return result;
 	}
 
-	/**
-	* With thanks to ruiokada. Adapted, then translated to Monkey C, from:
-	* https://gist.github.com/ruiokada/b28076d4911820ddcbbc
-	*
-	* Calculates sunrise and sunset in local time given latitude, longitude, and tz.
-	*
-	* Equations taken from:
-	* https://en.wikipedia.org/wiki/Julian_day#Converting_Julian_or_Gregorian_calendar_date_to_Julian_Day_Number
-	* https://en.wikipedia.org/wiki/Sunrise_equation#Complete_calculation_on_Earth
-	*
-	* @method getSunTimes
-	* @param {Float} lat Latitude of location (South is negative)
-	* @param {Float} lng Longitude of location (West is negative)
-	* @param {Integer || null} tz Timezone hour offset. e.g. Pacific/Los Angeles is -8 (Specify null for system timezone)
-	* @param {Boolean} tomorrow Calculate tomorrow's sunrise and sunset, instead of today's.
-	* @return {Array} Returns array of length 2 with sunrise and sunset as floats.
-	*                 Returns array with [null, -1] if the sun never rises, and [-1, null] if the sun never sets.
-	*/
-	private function getSunTimes(lat, lng, tz, tomorrow) as Array<Number?> {
-
-		// Use double precision where possible, as floating point errors can affect result by minutes.
-		lat = lat.toDouble();
-		lng = lng.toDouble();
-
-		var now = Time.now();
-		if (tomorrow) {
-			now = now.add(new Time.Duration(24 * 60 * 60));
-		}
-		var d = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-		var rad = Math.PI / 180.0d;
-		var deg = 180.0d / Math.PI;
-		
-		// Calculate Julian date from Gregorian.
-		var a = Math.floor((14 - d.month) / 12);
-		var y = d.year + 4800 - a;
-		var m = d.month + (12 * a) - 3;
-		var jDate = d.day
-			+ Math.floor(((153 * m) + 2) / 5)
-			+ (365 * y)
-			+ Math.floor(y / 4)
-			- Math.floor(y / 100)
-			+ Math.floor(y / 400)
-			- 32045;
-
-		// Number of days since Jan 1st, 2000 12:00.
-		var n = jDate - 2451545.0d + 0.0008d;
-		//Sys.println("n " + n);
-
-		// Mean solar noon.
-		var jStar = n - (lng / 360.0d);
-		//Sys.println("jStar " + jStar);
-
-		// Solar mean anomaly.
-		var M = 357.5291d + (0.98560028d * jStar);
-		var MFloor = Math.floor(M);
-		var MFrac = M - MFloor;
-		M = MFloor.toLong() % 360;
-		M += MFrac;
-		//Sys.println("M " + M);
-
-		// Equation of the centre.
-		var C = 1.9148d * Math.sin(M * rad)
-			+ 0.02d * Math.sin(2 * M * rad)
-			+ 0.0003d * Math.sin(3 * M * rad);
-		//Sys.println("C " + C);
-
-		// Ecliptic longitude.
-		var lambda = (M + C + 180 + 102.9372d);
-		var lambdaFloor = Math.floor(lambda);
-		var lambdaFrac = lambda - lambdaFloor;
-		lambda = lambdaFloor.toLong() % 360;
-		lambda += lambdaFrac;
-		//Sys.println("lambda " + lambda);
-
-		// Solar transit.
-		var jTransit = 2451545.5d + jStar
-			+ 0.0053d * Math.sin(M * rad)
-			- 0.0069d * Math.sin(2 * lambda * rad);
-		//Sys.println("jTransit " + jTransit);
-
-		// Declination of the sun.
-		var delta = Math.asin(Math.sin(lambda * rad) * Math.sin(23.44d * rad));
-		//Sys.println("delta " + delta);
-
-		// Hour angle.
-		var cosOmega = (Math.sin(-0.83d * rad) - Math.sin(lat * rad) * Math.sin(delta))
-			/ (Math.cos(lat * rad) * Math.cos(delta));
-		//Sys.println("cosOmega " + cosOmega);
-
-		// Sun never rises.
-		if (cosOmega > 1) {
-			return [null, -1];
-		}
-		
-		// Sun never sets.
-		if (cosOmega < -1) {
-			return [-1, null];
-		}
-		
-		// Calculate times from omega.
-		var omega = Math.acos(cosOmega) * deg;
-		var jSet = jTransit + (omega / 360.0);
-		var jRise = jTransit - (omega / 360.0);
-		var deltaJSet = jSet - jDate;
-		var deltaJRise = jRise - jDate;
-
-		var tzOffset = (tz == null) ? (Sys.getClockTime().timeZoneOffset / 3600) : tz;
-		return [
-			/* localRise */ (deltaJRise * 24) + tzOffset,
-			/* localSet */ (deltaJSet * 24) + tzOffset
-		];
+	function Now() {
+		return Time.now();
 	}
 }

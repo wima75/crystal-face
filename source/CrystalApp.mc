@@ -322,4 +322,13 @@ class CrystalApp extends App.AppBase {
 			:amPm => amPm
 		};
 	}
+
+	function formatTime(hour, min) {
+		if (!Sys.getDeviceSettings().is24Hour) {
+			if (hour > 12) {
+				hour = hour - 12;
+			}
+		}
+		return Lang.format("$1$:$2$", [hour, min.format("%02d")]);
+	}
 }
