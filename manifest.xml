@@ -4,6 +4,13 @@
   <iq:application entry="CrystalApp" id="5bb8cf4e-3466-47a3-8f38-9a351064051f" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="1.4.0" name="@Strings.AppName" type="watchface" version="3.0.1">
     <iq:products>
       <iq:product id="fenix6pro"/>
+      <iq:product id="fenix6s"/>
+      <iq:product id="fenix6spro"/>
+      <iq:product id="fenix7"/>
+      <iq:product id="fenix7pro"/>
+      <iq:product id="fenix7pronowifi"/>
+      <iq:product id="fenix7s"/>
+      <iq:product id="fenix7spro"/>
     </iq:products>
     <iq:permissions>
       <iq:uses-permission id="Background"/>
